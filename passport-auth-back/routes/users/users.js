@@ -9,6 +9,6 @@ router.get("/", function (req, res, next) {
 
 router.post("/sign-up", signUp);
 router.post("/login", login);
-router.put("/update-profile", passport.authenticate("jwt-user"), updateProfile);
+router.put("/update-profile", passport.authenticate("jwt-user", { session: false}), updateProfile);
 
 module.exports = router;

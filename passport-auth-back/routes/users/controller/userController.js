@@ -65,7 +65,7 @@ const updateProfile = async (req, res) => {
     res.json({
       message: "Update route success",
       user: req.user,
-      passport: req.session.passport,
+      //passport: req.session.passport,
     });
   } catch (e){
     res.status(500).json({ message: e.message})

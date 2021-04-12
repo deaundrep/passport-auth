@@ -33,17 +33,6 @@ var app = express();
 
 app.use(passport.initialize());
 
-passport.serializeUser((user, cb) => {
-  console.log("=== 36");
-  console.log(user);
-  cb(null, user);
-});
-
-passport.deserializeUser((user, cb) => {
-  
-  cb(null, user);
-});
-
 passport.use("jwt-user", userJWTLoginStrategy)
 
 // view engine setup
