@@ -10,9 +10,6 @@ jwtOpts.secretOrKey = keys;
 
 const userJWTLoginStrategy = new JwtStrategy(jwtOpts, async (payload, done) => {
   const userEmail = payload.email;
-  console.log("==== 13");
-  console.log(userEmail);
-
   try {
     if (userEmail) {
       const user = await User.findOne({ email: userEmail }).select("-password");

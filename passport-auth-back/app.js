@@ -9,12 +9,15 @@ var cors = require("cors");
 require("dotenv").config();
 
 var passport = require("passport");
-var userJWTLoginStrategy = require("./routes/lib/passport/user-passport-auth");
+const userJWTLoginStrategy = require("./routes/lib/passport/user-passport-auth");
+
+const adminJWTLoginStrategy = require("./routes/lib/passport/admin-passport-auth");
 
 
-var indexRouter = require("./routes/users");
+var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users/users");
-
+var adminRouter = require("./routes/admin/admin")
+console.log(adminRouter)
 mongoose
   .connect(process.env.MONGO_DB, {
     useNewUrlParser: true,
@@ -33,7 +36,10 @@ var app = express();
 
 app.use(passport.initialize());
 
-passport.use("jwt-user", userJWTLoginStrategy)
+passport.use("jwt-user", userJWTLoginStrategy);
+
+passport.use("jwt-admin", adminJWTLoginStrategy)
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -49,6 +55,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/admin", adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
