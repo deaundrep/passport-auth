@@ -103,10 +103,25 @@ const creatUserUsingAdminRoute = async (req, res) => {
     }
 };
 
+const deleteUserByEmailUsingAdminRoute = async (req, res) => {
+    try {
+        let deletedUser = await User.findOneAndDelete({ email: req.body.email });
+
+        res.json({
+            message: "deleted user",
+            user: deletedUser,
+        });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+};
+
 
 module.exports = {
     signUp,
     login,
     updateProfile,
     getAllUsersProfile,
+    creatUserUsingAdminRoute,
+    deleteUserByEmailUsingAdminRoute,
 }
