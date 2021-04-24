@@ -1,6 +1,7 @@
-const Admin = require("../model/Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const Admin = require("../model/Admin");
 const User = require("../../users/model/User");
 
 const signUp = async (req, res) => {
@@ -71,32 +72,33 @@ const updateProfile = async (req, res) => {
         res.status(500).json({ message: e.message });
     }
 };
+
 const getAllUsersProfile = async (req, res) => {
     try {
         let allUsersProfile = await User.find({});
 
         res.json({
-            message: " Got all Users",
+            message: "Got all users",
             users: allUsersProfile,
         });
     } catch (e) {
-        res.status(500).json({ message: e.message })
-
+        res.status(500).json({ message: e.message });
     }
-}
+};
 
-const creatUserUsingAdminRoute = async (req, res) => {
+const createUserUsingAdminRoute = async (req, res) => {
     try {
         let createdUser = new User({
-            email: req.body.username,
+            email: req.body.email,
             username: req.body.username,
             password: req.body.password,
         });
-        let saveUser = await createdUser.save();
+
+        let savedUser = await createdUser.save();
 
         res.json({
             message: "created user",
-            user: saveUser,
+            user: savedUser,
         });
     } catch (e) {
         res.status(500).json({ message: e.message });
@@ -116,12 +118,29 @@ const deleteUserByEmailUsingAdminRoute = async (req, res) => {
     }
 };
 
+const updateUserByEmailUsingAdminRoute = async (req, res) => {
+    try {
+        let updatedUser = await User.findOneAndUpdate(
+            { email: req.body.email },
+            req.body,
+            { new: true }
+        );
+
+        res.json({
+            message: "updated user",
+            user: updatedUser,
+        });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+};
 
 module.exports = {
     signUp,
     login,
     updateProfile,
     getAllUsersProfile,
-    creatUserUsingAdminRoute,
+    createUserUsingAdminRoute,
     deleteUserByEmailUsingAdminRoute,
-}
+    updateUserByEmailUsingAdminRoute,
+};
