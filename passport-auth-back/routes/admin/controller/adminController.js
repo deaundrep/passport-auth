@@ -1,6 +1,7 @@
 const Admin = require("../model/Admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../../users/model/User");
 
 const signUp = async (req, res) => {
     try {
@@ -83,6 +84,24 @@ const getAllUsersProfile = async (req, res) => {
 
     }
 }
+
+const creatUserUsingAdminRoute = async (req, res) => {
+    try {
+        let createdUser = new User({
+            email: req.body.username,
+            username: req.body.username,
+            password: req.body.password,
+        });
+        let saveUser = await createdUser.save();
+
+        res.json({
+            message: "created user",
+            user: saveUser,
+        });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+};
 
 
 module.exports = {
